@@ -1,0 +1,90 @@
+PDFBox Version: 3.0.6
+Portfolio Performance Version: 0.83.2
+System: win32 | x86_64 | 21.0.5+11-LTS | Azul Systems, Inc.
+-----------------------------------------
+Ihren Auftrag haben wir gemäß unseren produktbezogenen
+Geschäftsbedingungen "Trading" wie nachstehend ausgeführt.
+Die Wertpapiere haben wir der Abrechnung entsprechend gebucht.
+Wir bitten Sie, diese Abrechnung auf ihre Richtigkeit und
+Vollständigkeit zu überprüfen und etwaige Einwendungen
+unverzüglich zu erheben.
+25449 Quickborn
+Telefon : 04106-708 25 00
+10253 010
+Depotnr.: 1924155 00
+BLZ: 930 821 37
+YBrXYq hcIpJlXdIi
+Musterstr. 5
+72911 nvCDUrl OKfgpN
+GESCHÄFTSABRECHNUNG VOM 27.04.2026
+*
+Wertpapierkauf
+Geschäftsnummer : 91 022773
+Ordernummer : 000518504925-001 Rechnungsnummer : 704391249167DDF5
+Geschäftstag : 27.04.2026 Ausführungsplatz : TRADEGATE
+Handelszeit : 16:13 Uhr (MEZ/MESZ) (Kommissionsgeschäft)
+Wertpapier-Bezeichnung WPKNR/ISIN
+freenet AG A0Z2ZZ
+Namens-Aktien o.N. DE000A0Z2ZZ5
+Nennwert Zum Kurs von
+St. 10 EUR 26,70
+Kurswert : EUR 267,00
+--------------------------------------------------------------------------------
+Eigene Entgelte
+Provision : EUR 9,90
+Umschreibeentgelt : EUR 0,95
+Börsenplatzabhäng. Entgelt : EUR 2,50
+Summe Entgelte : EUR 13,35
+--------------------------------------------------------------------------------
+IBAN Valuta Zu Ihren Lasten vor Steuern
+BI16 1933 0640 5582 5284 00 EUR 29.04.2026 EUR 280,35
+Verwahrungs-Art: GIROSAMMELDEPOT
+Ihre Wertpapier-Order wurde über das Online Banking erteilt.
+Informationen zur steuerlichen Behandlung dieses Geschäftsvorgangs und den auf
+Ihrem Konto gebuchten Endbetrag finden Sie auf der separaten Steuermitteilung.
+Bei Fragen geben Sie bitte die Ordernummer an.
+Ihre comdirect
+Diese Abrechnung wird von der Bank nicht unterschrieben
+Die Leistung ist gemäß §4 Nr.8 UStG umsatzsteuerfrei. USt-Id-Nr.: DE 114 103 514
+A113
+DO15DD/16/04/2010
+Kundennr. /BLZ Bezeichnung
+BeHHQo TmhglmBvyc
+8056366
+Musterstr. 5
+200 411 33 22940 qUasNMq SWdnmM
+abweichend wirtschaftlich Berechtigter
+----
+comdirect
+25451 Quickborn
+010 10253
+Telefon: 04106 - 708 25 00
+Herrn Datum: 27.04.2026
+AAWzgc mtftxBEAvZ Depotnummer: 1556019 00
+Musterstr. 5
+91213 sxdKdeC mfYyfA Referenz-Nummer: 0AINFTP04MS0000N
+Steuerliche Behandlung: Wertpapierkauf Nr. 91022773 vom 27.04.2026
+Stk. 10 FREENET AG NA O.N. , WKN / ISIN: A0Z2ZZ / DE000A0Z2ZZ5
+Zu Ihren Lasten vor Steuern: EUR -280,35
+Steuerbemessungsgrundlage EUR 0,00
+Kapitalertragsteuer EUR 0,00
+Solidaritätszuschlag EUR 0,00
+Kirchensteuer E_U_R_______________0_,_0_0_
+abgeführte Steuern E_U_R_______________0_,_0_0_
+Zu Ihren Lasten nach Steuern: EUR -280,35
+Die Belastung erfolgt mit Valuta 29.04.2026 auf Konto EUR mit der IBAN lB91 8800 7658 3402 7625 00
+KEINE STEUERBESCHEINIGUNG ...
+Bisher einbehaltene bzw. angerechnete Steuer in EUR (4)
+in 2026 einbehaltene einbehaltener einbehaltene angerechnete
+Kapitalertragsteuer Solidaritätszuschlag Kirchensteuer ausländische Quellensteuer
+vor Ermittlung 0,00 0,00 0,00 0,00
+nach Ermittlung 0,00 0,00 0,00 0,00
+Verrechnungssalden in EUR (4)
+Gewinne / Verluste sonstige anrechenbare verfügbarer
+in 2026 aus Aktien Gewinne / Verluste ausländische Quellensteuer Freistellungsauftrag
+vor Ermittlung 142,84 86,77 -0,71 770,39
+nach Ermittlung 142,84 86,77 -0,71 770,39
+Ihre comdirect
+Diese Abrechnung ist maschinell erstellt und wird nicht unterschrieben.
+(4) Die ausgewiesenen EUR-Beträge spiegeln den Stand zum Abrechnungszeitpunkt wider.
+KEINE STEUERBESCHEINIGUNG
