@@ -182,6 +182,26 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                                             t.setSecurity(getOrCreateSecurity(v));
                                                         }),
                                         // @formatter:off
+                                        // Wertpapier-Bezeichnung                                               WPKNR/ISIN
+                                        // VanEck Mstr.DM Dividend.UC.ETF                                           A2JAHJ
+                                        // Aandelen oop toonder o.N.                                          NL0011683594
+                                        // Nennwert Zum Kurs von
+                                        // St. 65 EUR 52,31
+                                        // @formatter:on
+                                        section -> section //
+                                                        .attributes("name", "wkn", "nameContinued", "isin", "currency") //
+                                                        .find("Wertpapier\\-Bezeichnung .*") //
+                                                        .match("^(?<name>.*)[\\s]{1,}(?<wkn>[A-Z0-9]{6}).*$") //
+                                                        .match("^(?<nameContinued>.*)[\\s]{1,}(?<isin>[A-Z]{2}[A-Z0-9]{9}[0-9]).*$") //
+                                                        .match("^[\\s]*Nennwert[\\s]+Zum[\\s]+Kurs[\\s]+von[\\s]*$") //
+                                                        .match("^[\\s]*St\\.[\\s]{1,}[\\.,\\d]+[\\s]{1,}(?<currency>[A-Z]{3}).*$") //
+                                                        .assign((t, v) -> {
+                                                            v.put("name", trim(replaceMultipleBlanks(v.get("name"))));
+                                                            v.put("nameContinued", trim(replaceMultipleBlanks(v.get("nameContinued"))));
+
+                                                            t.setSecurity(getOrCreateSecurity(v));
+                                                        }),
+                                        // @formatter:off
                                         // zum Kurs von : EUR  33,47
                                         //                           Wertpapierbezeichnung          WPK-Nr.
                                         // St. 16                    iShares PLC-MSCI Wo.UC.ETF DIS A0HGV0
@@ -1040,7 +1060,7 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                                         .match("^Stk\\.[\\-\\s]{1,}[\\.,\\d]+ (?<name>.*), WKN \\/ ISIN: (?<wkn>[A-Z0-9]{6})[\\s]{1,}\\/[\\s]{1,}(?<isin>[A-Z]{2}[A-Z0-9]{9}[0-9]).*$") //
                                                         .match("^[\\s]*Z[\\s]*u[\\s]*I[\\s]*h[\\s]*r[\\s]*e[\\s]*n[\\s]*" //
                                                                         + "(G[\\s]*u[\\s]*n[\\s]*s[\\s]*t[\\s]*e[\\s]*n|L[\\s]*a[\\s]*s[\\s]*t[\\s]*e[\\s]*n)" //
-                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?:[A-Z][\\s]*){3}[\\s]{1,}[\\.,\\d\\s]+[\\s]{1,}(?<currency>(?:[A-Z][\\s]*){3})[\\s]{1,}[\\.,\\d\\s]+.*$") //
+                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?:[A-Z][\\s]*){3}[\\-\\s]{1,}[\\.,\\d\\s]+[\\s]{1,}(?<currency>(?:[A-Z][\\s]*){3})[\\-\\s]{1,}[\\.,\\d\\s]+.*$") //
                                                         .assign((t, v) -> {
                                                             v.put("currency", stripBlanks(v.get("currency")));
                                                             v.put("name", trim(replaceMultipleBlanks(v.get("name"))));
@@ -1059,7 +1079,7 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                                         .match("^Stk\\.[\\-\\s]{1,}[\\.,\\d]+ (?<name>.*), WKN \\/ ISIN: (?<wkn>[A-Z0-9]{6})[\\s]{1,}\\/[\\s]{1,}(?<isin>[A-Z]{2}[A-Z0-9]{9}[0-9]).*$") //
                                                         .match("^[\\s]*Z[\\s]*u[\\s]*I[\\s]*h[\\s]*r[\\s]*e[\\s]*n[\\s]*" //
                                                                         + "(G[\\s]*u[\\s]*n[\\s]*s[\\s]*t[\\s]*e[\\s]*n|L[\\s]*a[\\s]*s[\\s]*t[\\s]*e[\\s]*n)" //
-                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?<currency>(?:[A-Z][\\s]*){3})[\\s]{1,}[\\.,\\d\\s]+.*$") //
+                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?<currency>(?:[A-Z][\\s]*){3})[\\-\\s]{1,}[\\.,\\d\\s]+.*$") //
                                                         .assign((t, v) -> {
                                                             v.put("currency", stripBlanks(v.get("currency")));
                                                             v.put("name", trim(replaceMultipleBlanks(v.get("name"))));
@@ -1075,7 +1095,7 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                                         .match("^(?<currency>[A-Z]{3})[\\-\\s]{1,}(?<shares>[\\.,\\d]+) (?<name>.*), WKN \\/ ISIN: (?<wkn>[A-Z0-9]{6})[\\s]{1,}\\/[\\s]{1,}(?<isin>[A-Z]{2}[A-Z0-9]{9}[0-9]).*$") //
                                                         .match("^[\\s]*Z[\\s]*u[\\s]*I[\\s]*h[\\s]*r[\\s]*e[\\s]*n[\\s]*" //
                                                                         + "(G[\\s]*u[\\s]*n[\\s]*s[\\s]*t[\\s]*e[\\s]*n|L[\\s]*a[\\s]*s[\\s]*t[\\s]*e[\\s]*n)" //
-                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?:[A-Z][\\s]*){3}[\\s]{1,}[\\.,\\d\\s]+.*$") //
+                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?:[A-Z][\\s]*){3}[\\-\\s]{1,}[\\.,\\d\\s]+.*$") //
                                                         .assign((t, v) -> {
                                                             v.put("currency", stripBlanks(v.get("currency")));
                                                             v.put("name", trim(replaceMultipleBlanks(v.get("name"))));

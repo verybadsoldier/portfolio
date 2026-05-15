@@ -949,6 +949,39 @@ public class ComdirectPDFExtractorTest
     }
 
     @Test
+    public void testWertpapierKaufMitSteuerbehandlung17()
+    {
+        var extractor = new ComdirectPDFExtractor(new Client());
+
+        List<Exception> errors = new ArrayList<>();
+
+        var results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "KaufMitSteuerbehandlung17.txt"), errors);
+
+        assertThat(errors, empty());
+        assertThat(countSecurities(results), is(1L));
+        assertThat(countBuySell(results), is(1L));
+        assertThat(countAccountTransactions(results), is(0L));
+        assertThat(countAccountTransfers(results), is(0L));
+        assertThat(countItemsWithFailureMessage(results), is(0L));
+        assertThat(countSkippedItems(results), is(0L));
+        assertThat(results.size(), is(2));
+        new AssertImportActions().check(results, "EUR");
+
+        // check security
+        assertThat(results, hasItem(security( //
+                        hasIsin("NL0011683594"), hasWkn("A2JAHJ"), hasTicker(null), //
+                        hasName("VanEck Mstr.DM Dividend.UC.ETF Aandelen oop toonder o.N."), hasCurrencyCode("EUR"))));
+
+        // check transaction
+        assertThat(results, hasItem(purchase( //
+                        hasDate("2026-05-07T14:45"), hasShares(65.0), //
+                        hasSource("KaufMitSteuerbehandlung17.txt"), //
+                        hasNote("Ord.-Nr.: 000520550992-001 | R.-Nr.: 705249944215D285"), //
+                        hasAmount("EUR", 3402.65), hasGrossValue("EUR", 3400.15), //
+                        hasTaxes("EUR", 0.00), hasFees("EUR", 2.50))));
+    }
+
+    @Test
     public void testWertpapierKaufSteuerbehandlung01()
     {
         var extractor = new ComdirectPDFExtractor(new Client());
