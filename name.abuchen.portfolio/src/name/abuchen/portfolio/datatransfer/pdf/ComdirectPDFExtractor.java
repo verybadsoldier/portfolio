@@ -1040,7 +1040,7 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                                         .match("^Stk\\.[\\-\\s]{1,}[\\.,\\d]+ (?<name>.*), WKN \\/ ISIN: (?<wkn>[A-Z0-9]{6})[\\s]{1,}\\/[\\s]{1,}(?<isin>[A-Z]{2}[A-Z0-9]{9}[0-9]).*$") //
                                                         .match("^[\\s]*Z[\\s]*u[\\s]*I[\\s]*h[\\s]*r[\\s]*e[\\s]*n[\\s]*" //
                                                                         + "(G[\\s]*u[\\s]*n[\\s]*s[\\s]*t[\\s]*e[\\s]*n|L[\\s]*a[\\s]*s[\\s]*t[\\s]*e[\\s]*n)" //
-                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?:[A-Z][\\s]*){3}[\\s]{1,}[\\.,\\d\\s]+[\\s]{1,}(?<currency>(?:[A-Z][\\s]*){3})[\\s]{1,}[\\.,\\d\\s]+.*$") //
+                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?:[A-Z][\\s]*){3}[\\-\\s]{1,}[\\.,\\d\\s]+[\\s]{1,}(?<currency>(?:[A-Z][\\s]*){3})[\\-\\s]{1,}[\\.,\\d\\s]+.*$") //
                                                         .assign((t, v) -> {
                                                             v.put("currency", stripBlanks(v.get("currency")));
                                                             v.put("name", trim(replaceMultipleBlanks(v.get("name"))));
@@ -1059,7 +1059,7 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                                         .match("^Stk\\.[\\-\\s]{1,}[\\.,\\d]+ (?<name>.*), WKN \\/ ISIN: (?<wkn>[A-Z0-9]{6})[\\s]{1,}\\/[\\s]{1,}(?<isin>[A-Z]{2}[A-Z0-9]{9}[0-9]).*$") //
                                                         .match("^[\\s]*Z[\\s]*u[\\s]*I[\\s]*h[\\s]*r[\\s]*e[\\s]*n[\\s]*" //
                                                                         + "(G[\\s]*u[\\s]*n[\\s]*s[\\s]*t[\\s]*e[\\s]*n|L[\\s]*a[\\s]*s[\\s]*t[\\s]*e[\\s]*n)" //
-                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?<currency>(?:[A-Z][\\s]*){3})[\\s]{1,}[\\.,\\d\\s]+.*$") //
+                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?<currency>(?:[A-Z][\\s]*){3})[\\-\\s]{1,}[\\.,\\d\\s]+.*$") //
                                                         .assign((t, v) -> {
                                                             v.put("currency", stripBlanks(v.get("currency")));
                                                             v.put("name", trim(replaceMultipleBlanks(v.get("name"))));
@@ -1075,7 +1075,7 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                                         .match("^(?<currency>[A-Z]{3})[\\-\\s]{1,}(?<shares>[\\.,\\d]+) (?<name>.*), WKN \\/ ISIN: (?<wkn>[A-Z0-9]{6})[\\s]{1,}\\/[\\s]{1,}(?<isin>[A-Z]{2}[A-Z0-9]{9}[0-9]).*$") //
                                                         .match("^[\\s]*Z[\\s]*u[\\s]*I[\\s]*h[\\s]*r[\\s]*e[\\s]*n[\\s]*" //
                                                                         + "(G[\\s]*u[\\s]*n[\\s]*s[\\s]*t[\\s]*e[\\s]*n|L[\\s]*a[\\s]*s[\\s]*t[\\s]*e[\\s]*n)" //
-                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?:[A-Z][\\s]*){3}[\\s]{1,}[\\.,\\d\\s]+.*$") //
+                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?:[A-Z][\\s]*){3}[\\-\\s]{1,}[\\.,\\d\\s]+.*$") //
                                                         .assign((t, v) -> {
                                                             v.put("currency", stripBlanks(v.get("currency")));
                                                             v.put("name", trim(replaceMultipleBlanks(v.get("name"))));
@@ -1247,7 +1247,7 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                                         .attributes("currencyBeforeTaxes", "grossBeforeTaxes", "fxCurrencyAssessmentBasis", "fxGrossAssessmentBasis", "currencyDeductedTaxes", "deductedTaxes", "exchangeRate") //
                                                         .match("^[\\s]*Z[\\s]*u[\\s]*I[\\s]*h[\\s]*r[\\s]*e[\\s]*n[\\s]*" //
                                                                         + "(G[\\s]*u[\\s]*n[\\s]*s[\\s]*t[\\s]*e[\\s]*n|L[\\s]*a[\\s]*s[\\s]*t[\\s]*e[\\s]*n)" //
-                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?:[A-Z][\\s]*){3}[\\s]{1,}[\\.,\\d\\s]+[\\s]{1,}(?<currencyBeforeTaxes>(?:[A-Z][\\s]*){3})[\\-\\s]{1,}(?<grossBeforeTaxes>[\\.,\\d\\s]+).*$") //
+                                                                        + "[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?:[A-Z][\\s]*){3}[\\-\\s]{1,}[\\.,\\d\\s]+[\\s]{1,}(?<currencyBeforeTaxes>(?:[A-Z][\\s]*){3})[\\-\\s]{1,}(?<grossBeforeTaxes>[\\.,\\d\\s]+).*$") //
                                                         .match("^[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*b[\\s]*e[\\s]*m[\\s]*e[\\s]*s[\\s]*s[\\s]*u[\\s]*n[\\s]*g[\\s]*s[\\s]*g[\\s]*r[\\s]*u[\\s]*n[\\s]*d[\\s]*l[\\s]*a[\\s]*g[\\s]*e[\\s]{1,}([\\(\\s\\d\\)]+)?(?<fxCurrencyAssessmentBasis>(?:[A-Z][\\s]*){3})[\\s]{1,}(?<fxGrossAssessmentBasis>[\\.,\\d\\s]+).*$") //
                                                         .match("^[\\s]*a[\\s]*b[\\s]*g[\\s]*e[\\s]*f[\\s]*.[\\s]*h[\\s]*r[\\s]*t[\\s]*e[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]{1,}[A-Z_\\s]+[\\-_\\s]{1,}[\\.,\\d_\\s]+[\\s]{1,}(?<currencyDeductedTaxes>[A-Z_\\s]+)[\\-_\\s]{1,}(?<deductedTaxes>[\\.,\\d_\\s]+).*$") //
                                                         .match("^Umrechnungen zum Devisenkurs [\\s]*(?<exchangeRate>[\\.,\\d]+).*$") //

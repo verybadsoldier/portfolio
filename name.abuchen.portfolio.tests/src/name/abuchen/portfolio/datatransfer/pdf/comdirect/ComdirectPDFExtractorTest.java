@@ -8468,4 +8468,25 @@ public class ComdirectPDFExtractorTest
                                         hasAmount("EUR", 0.00), hasGrossValue("EUR", 0.00), //
                                         hasTaxes("EUR", 0.00), hasFees("EUR", 0.00)))));
     }
+
+    @Test
+    public void testIssueComdirect1()
+    {
+        var extractor = new ComdirectPDFExtractor(new name.abuchen.portfolio.model.Client());
+        List<Exception> errors = new ArrayList<>();
+        var results = extractor.extract(PDFInputFile.loadTestCase(getClass(), "issue_comdirect.txt"), errors);
+
+        assertThat(errors, empty());
+        assertEquals(1, countBuySell(results));
+        assertEquals(0, countAccountTransfers(results));
+        assertEquals(0, countAccountTransactions(results));
+
+        assertThat(results, hasItem(purchase( //
+                        hasDate("2026-04-27T16:13"), hasShares(10.0), //
+                        hasSource("issue_comdirect.txt"), //
+                        hasNote("Ord.-Nr.: 000518504925-001 | R.-Nr.: 704391249167DDF5"), //
+                        hasAmount("EUR", 280.35), hasGrossValue("EUR", 267.0), //
+                        hasTaxes("EUR", 0.0), hasFees("EUR", 13.35))));
+    }
+
 }
