@@ -1177,7 +1177,8 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                                             // Parse amounts from tax treatment document
                                                             var grossBeforeTaxes = Money.of(asCurrencyCode(stripBlanks(v.get("currencyBeforeTaxes"))), asAmount(stripBlanks(v.get("grossBeforeTaxes"))));
                                                             var grossAssessmentBasis = Money.of(asCurrencyCode(stripBlanks(v.get("currencyAssessmentBasis"))), asAmount(stripBlanks(v.get("grossAssessmentBasis"))));
-                                                            var foreignWithholdingTax = Money.of(asCurrencyCode(stripBlanks(v.get("currencyForeignWithholdingTax"))), asAmount(stripBlanks(v.get("foreignWithholdingTax"))));
+                                                            var foreignWithholdingTax = grossAssessmentBasis.subtract(grossBeforeTaxes);
+															var foreignWithholdingTaxOld = Money.of(asCurrencyCode(stripBlanks(v.get("currencyForeignWithholdingTax"))), asAmount(stripBlanks(v.get("foreignWithholdingTax"))));
                                                             var deductedTaxes = Money.of(asCurrencyCode(stripBlanksAndUnderscores(v.get("currencyDeductedTaxes"))), asAmount(stripBlanksAndUnderscores(v.get("deductedTaxes"))));
 
                                                             // Initially set total taxes (German deducted taxes + foreign withholding tax)

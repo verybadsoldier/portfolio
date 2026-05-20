@@ -8503,6 +8503,37 @@ public class ComdirectPDFExtractorTest
                                         hasTaxes("EUR", 0.00), hasFees("EUR", 0.00)))));
     }
 
+    @Test
+    public void testDividende45()
+    {
+        var extractor = new ComdirectPDFExtractor(new Client());
+
+        List<Exception> errors = new ArrayList<>();
+
+        var results = extractor.extract(
+                        PDFInputFile.loadTestCase(getClass(), "Dividende45.txt"),
+                        errors);
+
+        assertThat(errors, empty());
+        assertThat(countSecurities(results), is(1L));
+        assertThat(countBuySell(results), is(0L));
+        assertThat(countAccountTransactions(results), is(1L));
+        assertThat(countAccountTransfers(results), is(0L));
+        assertThat(countItemsWithFailureMessage(results), is(0L));
+        assertThat(countSkippedItems(results), is(0L));
+        assertThat(results.size(), is(2));
+        new AssertImportActions().check(results, "EUR");
+
+
+        // check dividends transaction
+        assertThat(results, hasItem(dividend( //
+                        hasDate("2026-04-02T00:00"), hasShares(220.000), //
+                        hasSource("Dividende45.txt"), //
+                        hasNote("Ref.-Nr.: 3cfTL5t0xMT71563"), //
+                        hasAmount("EUR", 187.00), hasGrossValue("EUR", 187), //
+                        hasTaxes("EUR", 0.00), hasFees("EUR", 0.00))));
+    }
+
 
     @Test
     public void testDividende45MitSteuerbehandlungVonDividende22()
@@ -8528,7 +8559,7 @@ public class ComdirectPDFExtractorTest
         // check security
         assertThat(results, hasItem(security( //
                         hasIsin("FR0000120271"), hasWkn("850727"), hasTicker(null), //
-                        hasName("Actions au Porteur EO 2,50"), //
+                        hasName("TotalEnergies SE Actions au Porteur EO 2,50"), //
                         hasCurrencyCode("EUR"))));
 
         // check dividends transaction
@@ -8536,6 +8567,6 @@ public class ComdirectPDFExtractorTest
                         hasDate("2026-04-02T00:00"), hasShares(220.000), //
                         hasSource("Dividende45.txt; Dividende45MitSteuerbehandlung.txt"), //
                         hasNote("Ref.-Nr.: 3cfTL5t0xMT71563"), //
-                        hasAmount("EUR", 70.81), hasGrossValue("EUR", 187), //
-                        hasTaxes("EUR", 46.75 + 22.81 + 1.25 + 0), hasFees("EUR", 0.00))));
+                        hasAmount("EUR", 116.19), hasGrossValue("EUR", 187), //
+                        hasTaxes("EUR", 70.81), hasFees("EUR", 0.00))));
     }}
