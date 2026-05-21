@@ -1177,13 +1177,12 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                                             // Parse amounts from tax treatment document
                                                             var grossBeforeTaxes = Money.of(asCurrencyCode(stripBlanks(v.get("currencyBeforeTaxes"))), asAmount(stripBlanks(v.get("grossBeforeTaxes"))));
                                                             var grossAssessmentBasis = Money.of(asCurrencyCode(stripBlanks(v.get("currencyAssessmentBasis"))), asAmount(stripBlanks(v.get("grossAssessmentBasis"))));
-                                                            var foreignWithholdingTax = grossAssessmentBasis.subtract(grossBeforeTaxes);
-															var foreignWithholdingTaxOld = Money.of(asCurrencyCode(stripBlanks(v.get("currencyForeignWithholdingTax"))), asAmount(stripBlanks(v.get("foreignWithholdingTax"))));
+                                                            //var foreignWithholdingTax = Money.of(asCurrencyCode(stripBlanks(v.get("currencyForeignWithholdingTax"))), asAmount(stripBlanks(v.get("foreignWithholdingTax"))));
+                                                            
                                                             var deductedTaxes = Money.of(asCurrencyCode(stripBlanksAndUnderscores(v.get("currencyDeductedTaxes"))), asAmount(stripBlanksAndUnderscores(v.get("deductedTaxes"))));
-
+                                                            
                                                             // Initially set total taxes (German deducted taxes + foreign withholding tax)
-                                                            var totalDeductedTaxes = deductedTaxes.add(foreignWithholdingTax);
-                                                            t.setMonetaryAmount(totalDeductedTaxes);
+
 
                                                             // Use tax base before loss offset if it's higher than regular assessment basis
                                                             if (v.getTransactionContext().get(ATTRIBUTE_GROSS_TAX_BASE_BEFORE_LOST_OFFSET) != null)
@@ -1192,7 +1191,10 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                                                 if (grossTaxBaseBeforeLostOffset.isGreaterThan(grossAssessmentBasis))
                                                                     grossAssessmentBasis = grossTaxBaseBeforeLostOffset;
                                                             }
-
+                                                            var foreignWithholdingTax = grossAssessmentBasis.subtract(grossBeforeTaxes);
+                                                            var totalDeductedTaxes = deductedTaxes.add(foreignWithholdingTax);
+                                                            t.setMonetaryAmount(totalDeductedTaxes);   
+                                                            
                                                             // Calculate effective tax burden when no German taxes were deducted
                                                             // (e.g., due to allowances or loss offset):
                                                             // The actual burden is the difference between assessment basis and received amount
