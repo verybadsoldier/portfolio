@@ -66,11 +66,20 @@ jobs:
       uses: stCarolas/setup-maven@v5
       with:
         maven-version: 3.9.11
+    - name: Install NSIS
+      run: sudo apt-get update && sudo apt-get install -y nsis
     - name: Build with Maven
       run: |
         mvn verify sonar:sonar \
         --batch-mode \
         -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+        -Dinstaller.skip=false \
         --file portfolio-app/pom.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: installers
+        path: portfolio-product/target/products/PortfolioPerformance-*
+        if-no-files-found: warn
