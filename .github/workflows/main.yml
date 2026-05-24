@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - master
+      - '*'
   pull_request:
       types: [opened, synchronize, reopened]
 
@@ -34,15 +34,28 @@ jobs:
       uses: stCarolas/setup-maven@v5
       with:
         maven-version: 3.9.11
+    - name: Install NSIS and jsign
+      run: |
+        sudo apt-get update && sudo apt-get install -y nsis
+        wget https://github.com/ebourg/jsign/releases/download/6.0/jsign_6.0_all.deb
+        sudo dpkg -i jsign_6.0_all.deb
     - name: Build with Maven
       run: |
         mvn verify \
         --batch-mode \
         --file portfolio-app/pom.xml
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: |
+          portfolio-product/target/products/
+          portfolio-product/target/*.zip
+        if-no-files-found: warn
 
   build-analyze:
     name: Maven Build + Sonar Analysis
-    if: github.ref == 'refs/heads/master' && github.repository == 'portfolio-performance/portfolio'
+    #if: github.ref == 'refs/heads/master' && github.repository == 'portfolio-performance/portfolio'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
@@ -66,11 +79,23 @@ jobs:
       uses: stCarolas/setup-maven@v5
       with:
         maven-version: 3.9.11
+    - name: Install NSIS and jsign
+      run: |
+        sudo apt-get update && sudo apt-get install -y nsis
+        wget https://github.com/ebourg/jsign/releases/download/6.0/jsign_6.0_all.deb
+        sudo dpkg -i jsign_6.0_all.deb
     - name: Build with Maven
       run: |
         mvn verify sonar:sonar \
         --batch-mode \
         -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+        -Dinstaller.skip=false \
         --file portfolio-app/pom.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: installers
+        path: portfolio-product/target/products/PortfolioPerformance-*
+        if-no-files-found: warn
