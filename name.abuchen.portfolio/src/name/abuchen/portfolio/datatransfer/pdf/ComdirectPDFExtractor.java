@@ -2206,7 +2206,8 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                 var withholdTaxPa1 = (Money) pair.transaction().getData(ATTRIBUTE_STAGE1_WITHHOLDING_TAX);
                 var withholdTaxPa2 = (Money) pair.tax().getData(ATTRIBUTE_STAGE2_WITHHOLDING_TAX);
 
-                if (withholdTaxPa1 != null && withholdTaxPa2 != null && withholdTaxPa1 != withholdTaxPa2) {
+                if (withholdTaxPa1 != null && withholdTaxPa2 != null && withholdTaxPa1 != withholdTaxPa2)
+                {
                     taxesTotal = taxesTotal.add(withholdTaxPa1.subtract(withholdTaxPa2));
                 }
                 // end of: detect if withholding taxes were not completely regarded and add the missing amount if needed                

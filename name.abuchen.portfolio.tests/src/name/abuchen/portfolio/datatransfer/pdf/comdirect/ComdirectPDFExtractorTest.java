@@ -8538,4 +8538,5 @@ public class ComdirectPDFExtractorTest
                         hasNote("Ref.-Nr.: 3cfTL5t0xMT71563"), //
                         hasAmount("EUR", 116.19), hasGrossValue("EUR", 187), //
                         hasTaxes("EUR", 70.81), hasFees("EUR", 0.00))));
-    }}
+    }
+}
