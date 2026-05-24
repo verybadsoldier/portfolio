@@ -37,8 +37,8 @@ jobs:
     - name: Install NSIS and jsign
       run: |
         sudo apt-get update && sudo apt-get install -y nsis
-        wget https://github.com/ebourg/jsign/releases/download/7.4/jsign_7.4_all.deb
-        sudo dpkg -i jsign_7.4_all.deb
+        wget https://github.com/ebourg/jsign/releases/download/6.0/jsign_6.0_all.deb
+        sudo dpkg -i jsign_6.0_all.deb
     - name: Build with Maven
       run: |
         mvn verify \
@@ -82,8 +82,8 @@ jobs:
     - name: Install NSIS and jsign
       run: |
         sudo apt-get update && sudo apt-get install -y nsis
-        wget https://github.com/ebourg/jsign/releases/download/7.4/jsign_7.4_all.deb
-        sudo dpkg -i jsign_7.4_all.deb
+        wget https://github.com/ebourg/jsign/releases/download/6.0/jsign_6.0_all.deb
+        sudo dpkg -i jsign_6.0_all.deb
     - name: Build with Maven
       run: |
         mvn verify sonar:sonar \
