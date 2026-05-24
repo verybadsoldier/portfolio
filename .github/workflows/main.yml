@@ -34,11 +34,24 @@ jobs:
       uses: stCarolas/setup-maven@v5
       with:
         maven-version: 3.9.11
+    - name: Install NSIS and jsign
+      run: |
+        sudo apt-get update && sudo apt-get install -y nsis
+        wget https://github.com/ebourg/jsign/releases/download/7.4/jsign_7.4_all.deb
+        sudo dpkg -i jsign_7.4_all.deb
     - name: Build with Maven
       run: |
         mvn verify \
         --batch-mode \
         --file portfolio-app/pom.xml
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: |
+          portfolio-product/target/products/
+          portfolio-product/target/*.zip
+        if-no-files-found: warn
 
   build-analyze:
     name: Maven Build + Sonar Analysis
@@ -66,8 +79,11 @@ jobs:
       uses: stCarolas/setup-maven@v5
       with:
         maven-version: 3.9.11
-    - name: Install NSIS
-      run: sudo apt-get update && sudo apt-get install -y nsis
+    - name: Install NSIS and jsign
+      run: |
+        sudo apt-get update && sudo apt-get install -y nsis
+        wget https://github.com/ebourg/jsign/releases/download/7.4/jsign_7.4_all.deb
+        sudo dpkg -i jsign_7.4_all.deb
     - name: Build with Maven
       run: |
         mvn verify sonar:sonar \
