@@ -42,7 +42,7 @@ jobs:
 
   build-analyze:
     name: Maven Build + Sonar Analysis
-    if: github.ref == 'refs/heads/master' && github.repository == 'portfolio-performance/portfolio'
+    #if: github.ref == 'refs/heads/master' && github.repository == 'portfolio-performance/portfolio'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
