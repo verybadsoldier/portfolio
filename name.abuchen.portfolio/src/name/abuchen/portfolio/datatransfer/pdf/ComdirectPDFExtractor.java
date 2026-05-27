@@ -1168,21 +1168,20 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                         // a b g e f ü h rt e S t e u er n                                                                                                                    E_ U_ R_ _ _ _ _ _ _ _  _ _ _ _ _ _ _0_,_0_ 0_
                                         // @formatter:on
                                         section -> section //
-                                                        .attributes("currencyBeforeTaxes", "grossBeforeTaxes", "currencyAssessmentBasis", "currencyForeignWithholdingTax", "foreignWithholdingTax", "grossAssessmentBasis", "currencyDeductedTaxes", "deductedTaxes") //
+                                                        .attributes("currencyBeforeTaxes", "grossBeforeTaxes", "currencyAssessmentBasis", "currencyForeignWithholdingTax", "foreignWithholdingTax", "grossAssessmentBasis", "currencyDeductedTaxes", "deductedTaxes", "currencyAfterTaxes", "grossAfterTaxes" ) //
                                                         .match("^[\\s]*Z[\\s]*u[\\s]*I[\\s]*h[\\s]*r[\\s]*e[\\s]*n[\\s]*G[\\s]*u[\\s]*n[\\s]*s[\\s]*t[\\s]*e[\\s]*n[\\s]*v[\\s]*o[\\s]*r[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?<currencyBeforeTaxes>(?:[A-Z][\\s]*){3})[\\s\\-]+(?<grossBeforeTaxes>[\\.,\\d\\s]+).*$") //
                                                         .match("^[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*b[\\s]*e[\\s]*m[\\s]*e[\\s]*s[\\s]*s[\\s]*u[\\s]*n[\\s]*g[\\s]*s[\\s]*g[\\s]*r[\\s]*u[\\s]*n[\\s]*d[\\s]*l[\\s]*a[\\s]*g[\\s]*e[\\s]*.*(?<currencyAssessmentBasis>(?:[A-Z][\\s]*){3})[\\s\\-]+(?<grossAssessmentBasis>[\\.,\\d\\s]+).*$") //
                                                         .match("^\\(angerechnete ausl.ndische Quellensteuer:[\\s]*(?<currencyForeignWithholdingTax>[A-Z]{3})[\\s]+(?<foreignWithholdingTax>[\\.,\\d\\s]+)\\).*$") //
                                                         .match("^[\\s]*a[\\s]*b[\\s]*g[\\s]*e[\\s]*f[\\s]*.[\\s]*h[\\s]*r[\\s]*t[\\s]*e[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]+(?<currencyDeductedTaxes>[A-Z_\\s]+)[\\-_\\s]+(?<deductedTaxes>[\\.,\\d_\\s]+).*$") //
+                                                        .match("^[\\s]*Z[\\s]*u[\\s]*I[\\s]*h[\\s]*r[\\s]*e[\\s]*n[\\s]*G[\\s]*u[\\s]*n[\\s]*s[\\s]*t[\\s]*e[\\s]*n[\\s]*n[\\s]*a[\\s]*c[\\s]*h[\\s]*S[\\s]*t[\\s]*e[\\s]*u[\\s]*e[\\s]*r[\\s]*n[\\s]*:[\\s]{1,}(?<currencyAfterTaxes>(?:[A-Z][\\s]*){3})[\\s\\-]+(?<grossAfterTaxes>[\\.,\\d\\s]+).*$") //
                                                         .assign((t, v) -> {
                                                             // Parse amounts from tax treatment document
                                                             var grossBeforeTaxes = Money.of(asCurrencyCode(stripBlanks(v.get("currencyBeforeTaxes"))), asAmount(stripBlanks(v.get("grossBeforeTaxes"))));
+                                                            var grossAfterTaxes = Money.of(asCurrencyCode(stripBlanks(v.get("currencyAfterTaxes"))), asAmount(stripBlanks(v.get("grossAfterTaxes"))));
                                                             var grossAssessmentBasis = Money.of(asCurrencyCode(stripBlanks(v.get("currencyAssessmentBasis"))), asAmount(stripBlanks(v.get("grossAssessmentBasis"))));
                                                             var foreignWithholdingTax = Money.of(asCurrencyCode(stripBlanks(v.get("currencyForeignWithholdingTax"))), asAmount(stripBlanks(v.get("foreignWithholdingTax"))));
                                                             var deductedTaxes = Money.of(asCurrencyCode(stripBlanksAndUnderscores(v.get("currencyDeductedTaxes"))), asAmount(stripBlanksAndUnderscores(v.get("deductedTaxes"))));
 
-                                                            // Initially set total taxes (German deducted taxes + foreign withholding tax)
-                                                            var totalDeductedTaxes = deductedTaxes.add(foreignWithholdingTax);
-                                                            t.setMonetaryAmount(totalDeductedTaxes);
 
                                                             // Use tax base before loss offset if it's higher than regular assessment basis
                                                             if (v.getTransactionContext().get(ATTRIBUTE_GROSS_TAX_BASE_BEFORE_LOST_OFFSET) != null)
@@ -1191,6 +1190,26 @@ public class ComdirectPDFExtractor extends AbstractPDFExtractor
                                                                 if (grossTaxBaseBeforeLostOffset.isGreaterThan(grossAssessmentBasis))
                                                                     grossAssessmentBasis = grossTaxBaseBeforeLostOffset;
                                                             }
+                                                            
+                                                         // Calculate missing uncreditable foreign taxes
+                                                            var missingTaxes = Money.of(grossAssessmentBasis.getCurrencyCode(), 0);
+
+                                                            // For dividends with foreign tax, Gross (Assessment Basis) > Withheld Amount (Before Taxes).
+                                                            // For sales, Profit/Loss (Assessment Basis) < Total Proceeds (Before Taxes).
+                                                            // This condition safely prevents the calculation from running on sale documents.
+                                                            if (grossAssessmentBasis.isGreaterThan(grossBeforeTaxes)) {
+                                                                var foreignTaxes = grossAssessmentBasis.subtract(grossBeforeTaxes);
+                                                                missingTaxes = foreignTaxes.subtract(foreignWithholdingTax);
+                                                                
+                                                                // Safety check to prevent negative taxes from being applied
+                                                                if (missingTaxes.isNegative()) {
+                                                                    missingTaxes = Money.of(missingTaxes.getCurrencyCode(), 0);
+                                                                }
+                                                            }
+
+                                                            // Initially set total taxes (German deducted taxes + foreign withholding tax)
+                                                            var totalDeductedTaxes = deductedTaxes.add(foreignWithholdingTax);
+                                                            t.setMonetaryAmount(totalDeductedTaxes.add(missingTaxes));
 
                                                             // Calculate effective tax burden when no German taxes were deducted
                                                             // (e.g., due to allowances or loss offset):
